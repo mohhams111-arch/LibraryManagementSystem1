@@ -8,39 +8,73 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+//JUnit doğrulama metotlarının içe aktarılması
 import static org.junit.jupiter.api.Assertions.*;
 
+//Test anotasyonunun içe aktarılması
+import org.junit.jupiter.api.Test;
+
+//Tarih işlemleri için LocalDate sınıfının içe aktarılması
+import java.time.LocalDate;
+
 /**
- * Kütüphane sistemi için genel birim testleri
- */
+* Kütüphane sistemi için genel birim test sınıfı
+* Bu sınıf, Book, Member ve Loan sınıflarının temel işlevlerini test eder
+*/
 public class LibrarySystemTest {
 
-    @Test
-    void testBookCreation() {
-        Book book = new Book(1, "Clean Code", "Robert C. Martin", "123456");
+ // Book sınıfının doğru şekilde oluşturulup oluşturulmadığını test eder
+ @Test
+ void testBookCreation() {
 
-        assertEquals(1, book.getId());
-        assertEquals("Clean Code", book.getTitle());
-        assertTrue(book.isAvailable());
-    }
+     // Yeni bir kitap nesnesi oluşturulur
+     Book book = new Book(1, "Clean Code", "Robert C. Martin", "123456");
 
-    @Test
-    void testMemberCreation() {
-        Member member = new Member(1, "Ali");
+     // Kitap ID değerinin doğru atanıp atanmadığı kontrol edilir
+     assertEquals(1, book.getId());
 
-        assertEquals(1, member.getId());
-        assertEquals("Ali", member.getName());
-    }
+     // Kitap başlığının doğru atanıp atanmadığı kontrol edilir
+     assertEquals("Clean Code", book.getTitle());
 
-    @Test
-    void testLoanProcess() {
-        Book book = new Book(2, "Java", "James Gosling", "654321");
-        Member member = new Member(2, "Veli");
+     // Kitabın başlangıçta müsait olup olmadığı kontrol edilir
+     assertTrue(book.isAvailable());
+ }
 
-        Loan loan = new Loan(book, member, LocalDate.now().minusDays(3));
-        loan.returnBook();
+ // Member sınıfının doğru şekilde oluşturulup oluşturulmadığını test eder
+ @Test
+ void testMemberCreation() {
 
-        assertNotNull(loan.getBorrowDate());
-        assertNotNull(loan.getReturnDate());
-    }
+     // Yeni bir üye nesnesi oluşturulur
+     Member member = new Member(1, "Ali");
+
+     // Üye ID değerinin doğru atanıp atanmadığı kontrol edilir
+     assertEquals(1, member.getId());
+
+     // Üye adının doğru atanıp atanmadığı kontrol edilir
+     assertEquals("Ali", member.getName());
+ }
+
+ // Loan sınıfında ödünç alma ve iade işlemlerinin doğru çalıştığını test eder
+ @Test
+ void testLoanProcess() {
+
+     // Test için bir kitap nesnesi oluşturulur
+     Book book = new Book(2, "Java", "James Gosling", "654321");
+
+     // Test için bir üye nesnesi oluşturulur
+     Member member = new Member(2, "Veli");
+
+     // Kitap 3 gün önce ödünç alınmış gibi Loan nesnesi oluşturulur
+     Loan loan = new Loan(book, member, LocalDate.now().minusDays(3));
+
+     // Kitap iade edilir
+     loan.returnBook();
+
+     // Ödünç alma tarihinin null olmadığı kontrol edilir
+     assertNotNull(loan.getBorrowDate());
+
+     // İade tarihinin null olmadığı kontrol edilir
+     assertNotNull(loan.getReturnDate());
+ }
 }
+
