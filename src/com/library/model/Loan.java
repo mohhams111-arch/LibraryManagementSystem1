@@ -3,8 +3,8 @@ package com.library.model;
 import java.time.LocalDate;
 
 /**
- * Bu sınıf, bir kitabın bir üye tarafından ödünç alınmasını temsil eder.
- * Ödünç alma ve iade tarihlerini ve gecikme durumunu içerir.
+ * Loan sınıfı, bir kitabın bir üye tarafından
+ * belirli bir tarihte ödünç alınmasını temsil eder.
  */
 public class Loan {
 
@@ -14,10 +14,24 @@ public class Loan {
     private LocalDate returnDate;
 
     /**
-     * Loan sınıfı için kurucu metot.
+     * Loan constructor
      *
-     * @param book Ödünç alınan kitap
-     * @param member Kitabı ödünç alan üye
+     * @param book ödünç alınan kitap
+     * @param member kitabı alan üye
+     * @param borrowDate ödünç alma tarihi
+     */
+    public Loan(Book book, Member member, LocalDate borrowDate) {
+        this.book = book;
+        this.member = member;
+        this.borrowDate = borrowDate;
+        this.returnDate = null;
+    }
+
+    /**
+     * Loan constructor (ödünç alma tarihi otomatik atanır)
+     *
+     * @param book ödünç alınan kitap
+     * @param member kitabı alan üye
      */
     public Loan(Book book, Member member) {
         this.book = book;
@@ -27,34 +41,54 @@ public class Loan {
     }
 
     /**
-     * Kitabın iade edilmesini sağlar.
+     * Kitabın iade edilmesini sağlar
      */
     public void returnBook() {
         this.returnDate = LocalDate.now();
-        book.setAvailable(true);
     }
 
     /**
-     * Gecikme gün sayısını hesaplar.
+     * Ödünç alınan kitabı döndürür
      *
-     * @return Geciken gün sayısı
+     * @return book
      */
-    public int calculateLateDays() {
-        if (returnDate == null) {
-            return 0;
-        }
-        int allowedDays = 14;
-        int usedDays = borrowDate.until(returnDate).getDays();
-        return Math.max(0, usedDays - allowedDays);
+    public Book getBook() {
+        return book;
     }
 
     /**
-     * Gecikme ücretini hesaplar.
+     * Kitabı alan üyeyi döndürür
      *
-     * @return Gecikme ücreti
+     * @return member
      */
-    public double calculateFee() {
-        int lateDays = calculateLateDays();
-        return lateDays * 1.5;
+    public Member getMember() {
+        return member;
+    }
+
+    /**
+     * Ödünç alma tarihini döndürür
+     *
+     * @return borrowDate
+     */
+    public LocalDate getBorrowDate() {
+        return borrowDate;
+    }
+
+    /**
+     * İade tarihini döndürür
+     *
+     * @return returnDate
+     */
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
+    /**
+     * İade tarihini manuel olarak ayarlar
+     *
+     * @param returnDate iade tarihi
+     */
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
     }
 }

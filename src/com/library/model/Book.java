@@ -1,63 +1,83 @@
 package com.library.model;
 
 /**
- * Bu sınıf, kütüphanedeki bir kitabı temsil eder.
- * Her kitap bir kimlik numarası, başlık, yazar bilgisi
- * ve müsaitlik durumuna sahiptir.
+ * Book sınıfı, kütüphanedeki kitap bilgilerini temsil eder.
  */
 public class Book {
 
     private int id;
     private String title;
     private String author;
+    private String isbn;
     private boolean available;
 
     /**
-     * Book sınıfı için kurucu metot.
+     * Book constructor
      *
-     * @param id Kitap kimliği
-     * @param title Kitap başlığı
-     * @param author Kitap yazarı
+     * @param id kitabın kimlik numarası
+     * @param title kitabın adı
+     * @param author kitabın yazarı
+     * @param isbn kitabın ISBN numarası
      */
-    public Book(int id, String title, String author) {
+    public Book(int id, String title, String author, String isbn) {
         this.id = id;
         this.title = title;
         this.author = author;
+        this.isbn = isbn;
         this.available = true;
     }
 
     /**
-     * Kitap kimliğini döndürür.
+     * Kitabın ID bilgisini döndürür
+     *
+     * @return id
      */
     public int getId() {
         return id;
     }
 
     /**
-     * Kitap başlığını döndürür.
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * Kitap yazarını döndürür.
-     */
-    public String getAuthor() {
-        return author;
-    }
-
-    /**
-     * Kitabın müsait olup olmadığını döndürür.
+     * Kitabın mevcut olup olmadığını döndürür
+     *
+     * @return available
      */
     public boolean isAvailable() {
         return available;
     }
 
     /**
-     * Kitabın müsaitlik durumunu ayarlar.
+     * Kitabın durumunu ayarlar
+     *
+     * @param available kitabın durumu
      */
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    /**
+     * Kitabın adını döndürür
+     *
+     * @return title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Kitabın yazarını döndürür
+     *
+     * @return author
+     */
+    public String getAuthor() {
+        return author;
+    }
+
+    /**
+     * Kitabın ISBN numarasını döndürür
+     *
+     * @return isbn
+     */
+    public String getIsbn() {
+        return isbn;
     }
 }

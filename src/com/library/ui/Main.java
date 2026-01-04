@@ -1,31 +1,40 @@
 package com.library.ui;
 
 import com.library.model.Book;
+import com.library.model.Loan;
 import com.library.model.Member;
-import com.library.service.LibraryManager;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 /**
- * Programın başlangıç noktasıdır.
+ * Programın çalıştırıldığı ana sınıf
  */
 public class Main {
 
-    /**
-     * Ana metot.
-     */
     public static void main(String[] args) {
 
-        LibraryManager libraryManager = new LibraryManager();
+    	Book book = new Book(1, "Clean Code", "Robert C. Martin", "123456");
+        Member member = new Member(1, "Ali");
+        
+        Loan loan = new Loan(book, member, LocalDate.now().minusDays(10));
 
-        Book book1 = new Book(1, "Java Programming", "James Gosling");
-        Book book2 = new Book(2, "Clean Code", "Robert C. Martin");
+        // Kitabı iade et
+        loan.returnBook();
 
-        Member member1 = new Member(1, "Ali");
+        long gecikmeGunSayisi = ChronoUnit.DAYS.between(
+                loan.getBorrowDate(),
+                loan.getReturnDate()
+        );
 
-        libraryManager.addBook(book1);
-        libraryManager.addBook(book2);
-        libraryManager.addMember(member1);
+        double ceza = 0;
+        if (gecikmeGunSayisi > 7) {
+            ceza = (gecikmeGunSayisi - 7) * 2.5;
+        }
 
-        libraryManager.borrowBook(book1, member1);
-        libraryManager.showAvailableBooks();
+        System.out.println("Üye: " + member.getName());
+        System.out.println("Kitap: " + book.getTitle());
+        System.out.println("Gecikme gün sayısı: " + gecikmeGunSayisi);
+        System.out.println("Ceza: " + ceza + " TL");
     }
 }
