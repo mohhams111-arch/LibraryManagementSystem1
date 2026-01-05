@@ -1,65 +1,98 @@
-// Kullanıcı arayüzü (UI) paketini tanımlar
 package com.library.ui;
 
-// Kitap sınıfını kullanabilmek için import edilir
 import com.library.model.Book;
-
-// Ödünç alma (Loan) sınıfını kullanabilmek için import edilir
 import com.library.model.Loan;
-
-// Üye (Member) sınıfını kullanabilmek için import edilir
 import com.library.model.Member;
 
-// Tarih işlemleri için LocalDate sınıfı import edilir
 import java.time.LocalDate;
-
-// İki tarih arasındaki gün farkını hesaplamak için ChronoUnit import edilir
 import java.time.temporal.ChronoUnit;
+import java.util.Scanner;
 
-// Programın çalıştırıldığı ana sınıf
 public class Main {
 
-    // Java programının başlangıç noktası
     public static void main(String[] args) {
 
-        // ID'si 1 olan, adı "Clean Code", yazarı ve ISBN numarası olan bir kitap oluşturulur
-        Book book = new Book(1, "Clean Code", "Robert C. Martin", "123456");
+        Scanner scanner = new Scanner(System.in);
+        boolean devam = true;
 
-        // ID'si 1 olan ve adı "Ali" olan bir üye oluşturulur
-        Member member = new Member(1, "Ali");
+        while (devam) {
 
-        // Kitabın 10 gün önce ödünç alındığını varsayan bir Loan nesnesi oluşturulur
-        Loan loan = new Loan(book, member, LocalDate.now().minusDays(10));
+            System.out.print("Üye adını giriniz (Ali /Mart): ");
+            String memberName = scanner.nextLine();
 
-        // Kitap iade edilir ve iade tarihi atanır
-        loan.returnBook();
+            Member member = null;
 
-        // Ödünç alma tarihi ile iade tarihi arasındaki gecikme gün sayısı hesaplanır
-        long gecikmeGunSayisi = ChronoUnit.DAYS.between(
-                loan.getBorrowDate(),
-                loan.getReturnDate()
-        );
+            if (memberName.equalsIgnoreCase("Ali")) {
+                member = new Member(1, "Ali");
+            } else if (memberName.equalsIgnoreCase("Mart")) {
+                member = new Member(2, "Mart");
+            } else {
+                System.out.println("❌ Bu üyenin sistemde hesabı yok.");
+                continue;
+            }
 
-        // Ceza değişkeni başlangıçta 0 olarak tanımlanır
-        double ceza = 0;
+            System.out.print("Kitap adını giriniz (Suc / Madonna): ");
+            String bookTitle = scanner.nextLine();
 
-        // Eğer gecikme süresi 7 günden fazlaysa
-        if (gecikmeGunSayisi > 7) {
+            Book book = null;
 
-            // 7 günden sonraki her gün için 2.5 TL ceza hesaplanır
-            ceza = (gecikmeGunSayisi - 7) * 2.5;
+            if (bookTitle.equalsIgnoreCase("Suc")) {
+                book = new Book(1, "Suc", "Author1", "111");
+            } else if (bookTitle.equalsIgnoreCase("Madonna")) {
+                book = new Book(2, "Madonna", "Author2", "222");
+            } else {
+                System.out.println("❌ Bu kitap sistemde mevcut değil.");
+                continue;
+            }
+
+      
+            System.out.print("Ödünç alma tarihi (YYYY-MM-DD): ");
+            LocalDate borrowDate = LocalDate.parse(scanner.nextLine());
+
+         
+            System.out.print("İade tarihi (YYYY-MM-DD): ");
+            LocalDate returnDate = LocalDate.parse(scanner.nextLine());
+
+            
+            Loan loan = new Loan(book, member, borrowDate);
+            loan.setReturnDate(returnDate);
+
+            
+            long toplamGun = ChronoUnit.DAYS.between(
+                    loan.getBorrowDate(),
+                    loan.getReturnDate()
+            );
+
+     
+            int izinliGun = 7;
+            long gecikmeGun = toplamGun - izinliGun;
+
+            if (gecikmeGun < 0) {
+                gecikmeGun = 0;
+            }
+
+            double ceza = gecikmeGun * 2.5;
+
+           
+            System.out.println("\n--- SONUÇ ---");
+            System.out.println("Üye: " + member.getName());
+            System.out.println("Kitap: " + book.getTitle());
+            System.out.println("Toplam gün sayısı: " + toplamGun);
+            System.out.println("Gecikme gün sayısı: " + gecikmeGun);
+            System.out.println("Ceza: " + ceza + " TL");
+
+       
+            System.out.print("\nYeni bir işlem yapmak ister misiniz? (E/H): ");
+            String cevap = scanner.nextLine();
+
+            if (cevap.equalsIgnoreCase("H")) {
+                devam = false;
+            }
+
+            System.out.println();
         }
 
-        // Üyenin adı ekrana yazdırılır
-        System.out.println("Üye: " + member.getName());
-
-        // Kitabın adı ekrana yazdırılır
-        System.out.println("Kitap: " + book.getTitle());
-
-        // Gecikme gün sayısı ekrana yazdırılır
-        System.out.println("Gecikme gün sayısı: " + gecikmeGunSayisi);
-
-        // Hesaplanan ceza miktarı ekrana yazdırılır
-        System.out.println("Ceza: " + ceza + " TL");
+        scanner.close();
+        System.out.println("Program sonlandırıldı.");
     }
 }
