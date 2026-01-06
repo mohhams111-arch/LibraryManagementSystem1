@@ -5,131 +5,111 @@ package com.library.model;
 import java.time.LocalDate;
 
 /**
- * Loan sınıfı
- * Bir kitabın bir üye tarafından belirli bir tarihte
- * ödünç alınmasını temsil eder.
+ * Loan sınıfı, bir kitabın bir üye tarafından
+ * belirli bir tarihte ödünç alınmasını temsil eder.
+ * Bu sınıf ödünç alma ve iade tarihlerini takip eder.
  */
 public class Loan {
 
-    // Ödünç alınan kitabı temsil eden değişken
+    // Ödünç alınan kitabı temsil eder
     private Book book;
 
-    // Kitabı ödünç alan üyeyi temsil eden değişken
+    // Kitabı ödünç alan üyeyi temsil eder
     private Member member;
 
-    // Kitabın ödünç alındığı tarihi tutan değişken
+    // Kitabın ödünç alındığı tarihi tutar
     private LocalDate borrowDate;
 
-    // Kitabın iade edildiği tarihi tutan değişken
+    // Kitabın iade edildiği tarihi tutar
     private LocalDate returnDate;
 
     /**
-     * Loan sınıfı için kurucu metot
-     * Ödünç alma tarihi dışarıdan parametre olarak alınır.
+     * Loan sınıfı için kurucu metot.
+     * Ödünç alma tarihi parametre olarak verilir.
      *
-     * @param book Ödünç alınan kitap
-     * @param member Kitabı alan üye
-     * @param borrowDate Ödünç alma tarihi
+     * @param book ödünç alınan kitap
+     * @param member kitabı ödünç alan üye
+     * @param borrowDate ödünç alma tarihi
      */
     public Loan(Book book, Member member, LocalDate borrowDate) {
 
-        // Kitap bilgisi atanır
         this.book = book;
-
-        // Üye bilgisi atanır
         this.member = member;
-
-        // Ödünç alma tarihi atanır
         this.borrowDate = borrowDate;
-
-        // İade tarihi başlangıçta boş olarak ayarlanır
         this.returnDate = null;
     }
 
     /**
-     * Loan sınıfı için ikinci kurucu metot
-     * Ödünç alma tarihi otomatik olarak bugünün tarihi atanır.
+     * Loan sınıfı için alternatif kurucu metot.
+     * Ödünç alma tarihi otomatik olarak bugünün tarihi olarak atanır.
      *
-     * @param book Ödünç alınan kitap
-     * @param member Kitabı alan üye
+     * @param book ödünç alınan kitap
+     * @param member kitabı ödünç alan üye
      */
     public Loan(Book book, Member member) {
 
-        // Kitap bilgisi atanır
         this.book = book;
-
-        // Üye bilgisi atanır
         this.member = member;
-
-        // Ödünç alma tarihi bugünün tarihi olarak atanır
         this.borrowDate = LocalDate.now();
-
-        // İade tarihi başlangıçta boş olarak ayarlanır
         this.returnDate = null;
     }
 
     /**
-     * Kitabın iade edilmesini sağlar
-     * İade tarihi bugünün tarihi olarak atanır.
+     * Kitabın iade edilmesini sağlar.
+     * İade tarihi bugünün tarihi olarak ayarlanır.
      */
     public void returnBook() {
 
-        // İade tarihi bugünün tarihi olarak ayarlanır
         this.returnDate = LocalDate.now();
     }
 
     /**
      * Ödünç alınan kitabı döndürür.
      *
-     * @return book
+     * @return ödünç alınan kitap
      */
     public Book getBook() {
 
-        // Kitap nesnesi geri döndürülür
         return book;
     }
 
     /**
      * Kitabı ödünç alan üyeyi döndürür.
      *
-     * @return member
+     * @return üye bilgisi
      */
     public Member getMember() {
 
-        // Üye nesnesi geri döndürülür
         return member;
     }
 
     /**
-     * Kitabın ödünç alındığı tarihi döndürür.
+     * Ödünç alma tarihini döndürür.
      *
-     * @return borrowDate
+     * @return ödünç alma tarihi
      */
     public LocalDate getBorrowDate() {
 
-        // Ödünç alma tarihi geri döndürülür
         return borrowDate;
     }
 
     /**
-     * Kitabın iade edildiği tarihi döndürür.
+     * Kitabın iade tarihini döndürür.
      *
-     * @return returnDate
+     * @return iade tarihi
      */
     public LocalDate getReturnDate() {
 
-        // İade tarihi geri döndürülür
         return returnDate;
     }
 
     /**
      * İade tarihini manuel olarak ayarlamak için kullanılır.
      *
-     * @param returnDate İade tarihi
+     * @param returnDate iade tarihi
      */
     public void setReturnDate(LocalDate returnDate) {
 
-        // İade tarihi dışarıdan gelen değerle güncellenir
         this.returnDate = returnDate;
     }
 }

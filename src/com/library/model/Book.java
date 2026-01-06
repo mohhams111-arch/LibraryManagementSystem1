@@ -2,115 +2,104 @@
 package com.library.model;
 
 /**
- * Book sınıfı
- * Kütüphanedeki kitap bilgilerini temsil eder.
+ * Book sınıfı, kütüphanede bulunan bir kitabın
+ * temel bilgilerini ve durumunu temsil eder.
+ * Her kitap benzersiz bir kimliğe sahiptir ve
+ * ödünç alınma durumuna göre takip edilir.
  */
 public class Book {
 
-    // Kitabın benzersiz kimlik numarasını tutan değişken
+    // Kitabın benzersiz kimlik numarası
     private int id;
 
-    // Kitabın adını tutan değişken
+    // Kitabın başlığı
     private String title;
 
-    // Kitabın yazarını tutan değişken
+    // Kitabın yazarı
     private String author;
 
-    // Kitabın ISBN numarasını tutan değişken
+    // Kitabın ISBN numarası
     private String isbn;
 
-    // Kitabın müsait olup olmadığını gösteren değişken
+    // Kitabın müsait olup olmadığını belirtir
     private boolean available;
 
     /**
-     * Book sınıfı için kurucu metot
+     * Book sınıfı için kurucu metot.
+     * Yeni oluşturulan kitap varsayılan olarak
+     * müsait (available) kabul edilir.
      *
-     * @param id Kitabın kimlik numarası
-     * @param title Kitabın adı
-     * @param author Kitabın yazarı
-     * @param isbn Kitabın ISBN numarası
+     * @param id kitabın kimlik numarası
+     * @param title kitabın adı
+     * @param author kitabın yazarı
+     * @param isbn kitabın ISBN numarası
      */
     public Book(int id, String title, String author, String isbn) {
 
-        // Kitap kimliği atanır
         this.id = id;
-
-        // Kitap adı atanır
         this.title = title;
-
-        // Kitap yazarı atanır
         this.author = author;
-
-        // ISBN numarası atanır
         this.isbn = isbn;
-
-        // Kitap başlangıçta müsait olarak ayarlanır
         this.available = true;
     }
 
     /**
-     * Kitabın kimlik numarasını döndürür
+     * Kitabın kimlik numarasını döndürür.
      *
-     * @return id
+     * @return kitap ID değeri
      */
     public int getId() {
 
-        // Kitap kimliği geri döndürülür
         return id;
     }
 
     /**
-     * Kitabın mevcut (müsait) olup olmadığını döndürür
+     * Kitabın şu anda müsait olup olmadığını döndürür.
      *
-     * @return available
+     * @return true ise kitap müsaittir, false ise ödünç alınmıştır
      */
     public boolean isAvailable() {
 
-        // Kitabın durumu geri döndürülür
         return available;
     }
 
     /**
-     * Kitabın durumunu ayarlar
+     * Kitabın müsaitlik durumunu ayarlar.
      *
-     * @param available Kitabın müsaitlik durumu
+     * @param available kitabın yeni durumu
      */
     public void setAvailable(boolean available) {
 
-        // Kitabın durumu güncellenir
         this.available = available;
     }
 
     /**
-     * Kitabın adını döndürür
+     * Kitabın başlığını döndürür.
      *
-     * @return title
+     * @return kitap adı
      */
     public String getTitle() {
 
-        // Kitap adı geri döndürülür
         return title;
     }
 
     /**
-     * Kitabın yazarını döndürür
+     * Kitabın yazar adını döndürür.
      *
-     * @return author
+     * @return kitap yazarı
      */
     public String getAuthor() {
 
-        // Kitap yazarı geri döndürülür
         return author;
     }
 
     /**
-     * Kitabın ISBN numarasını döndürür
+     * Kitabın ISBN numarasını döndürür.
      *
-     * @return isbn
+     * @return ISBN numarası
      */
     public String getIsbn() {
 
-        // ISBN numarası geri döndürülür
         return isbn;
     }
 }
