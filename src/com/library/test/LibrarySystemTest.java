@@ -1,88 +1,66 @@
-// Test sınıflarının bulunduğu paket
 package com.library.test;
 
-// JUnit doğrulama metotları
 import static org.junit.jupiter.api.Assertions.*;
 
-// Tarih işlemleri için LocalDate
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
-// JUnit test anotasyonu
 import org.junit.jupiter.api.Test;
 
-// Model sınıfları
 import com.library.model.Book;
 import com.library.model.Member;
 import com.library.model.Loan;
 
 /**
- * LibrarySystemTest sınıfı
- * Bu sınıf, kütüphane yönetim sistemindeki
- * temel model sınıflarının doğru çalışıp
- * çalışmadığını test etmek için kullanılır.
+ * Basit unit test sınıfı.
  */
 public class LibrarySystemTest {
 
     /**
-     * Book sınıfının doğru şekilde oluşturulup
-     * oluşturulmadığını test eder.
+     * Kitap oluşturma testi.
      */
     @Test
     void testBookCreation() {
 
-        // Test için kitap nesnesi oluşturulur
         Book book = new Book(1, "Clean Code", "Robert C. Martin", "123456");
 
-        // Kitap ID değerinin doğru olduğu kontrol edilir
         assertEquals(1, book.getId());
-
-        // Kitap başlığının doğru olduğu kontrol edilir
         assertEquals("Clean Code", book.getTitle());
-
-        // Kitabın başlangıçta müsait olması beklenir
         assertTrue(book.isAvailable());
     }
 
     /**
-     * Member sınıfının doğru şekilde oluşturulup
-     * oluşturulmadığını test eder.
+     * Üye oluşturma testi.
      */
     @Test
     void testMemberCreation() {
 
-        // Test için üye nesnesi oluşturulur
         Member member = new Member(1, "Ali");
 
-        // Üye ID değerinin doğru olduğu kontrol edilir
         assertEquals(1, member.getId());
-
-        // Üye adının doğru olduğu kontrol edilir
         assertEquals("Ali", member.getName());
     }
 
     /**
-     * Loan sınıfında ödünç alma ve iade işlemlerinin
-     * doğru çalıştığını test eder.
+     * Ödünç alma süresi testi.
      */
     @Test
     void testLoanProcess() {
 
-        // Test için kitap nesnesi oluşturulur
         Book book = new Book(2, "Java", "James Gosling", "654321");
-
-        // Test için üye nesnesi oluşturulur
         Member member = new Member(2, "Veli");
 
-        // Kitap 3 gün önce ödünç alınmış gibi Loan nesnesi oluşturulur
-        Loan loan = new Loan(book, member, LocalDate.now().minusDays(3));
+        LocalDate borrowDate = LocalDate.now().minusDays(10);
+        LocalDate returnDate = LocalDate.now();
 
-        // Ödünç alma tarihinin boş olmadığı kontrol edilir
-        assertNotNull(loan.getBorrowDate());
+        Loan loan = new Loan(book, member, borrowDate);
+        loan.setReturnDate(returnDate);
 
-        // Kitap iade edilir
-        loan.returnBook();
+        long totalDays = ChronoUnit.DAYS.between(
+                loan.getBorrowDate(),
+                loan.getReturnDate()
+        );
 
-        // İade tarihinin boş olmadığı kontrol edilir
-        assertNotNull(loan.getReturnDate());
+        assertEquals(10, totalDays);
     }
 }

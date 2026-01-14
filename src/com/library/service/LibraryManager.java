@@ -7,11 +7,16 @@ import com.library.interfaces.Searchable;
 import com.library.model.Book;
 import com.library.model.Loan;
 import com.library.model.Member;
+import com.library.model.StudentMember;
+
+import java.time.LocalDate;
 
 /**
- * LibraryManager sınıfı, kütüphane sisteminin ana yönetim sınıfıdır.
- * Kitapların, üyelerin ve ödünç alma işlemlerinin yönetilmesini sağlar.
- * Ayrıca Searchable arayüzünü uygulayarak arama işlevi sunar.
+ * LibraryManager sınıfı, kütüphane sisteminin
+ * ana yönetim sınıfıdır.
+ *
+ * Kitap, üye ve ödünç alma işlemlerini yönetir
+ * ve arama işlevi sunar.
  */
 public class LibraryManager implements Searchable {
 
@@ -21,12 +26,11 @@ public class LibraryManager implements Searchable {
     /** Kütüphaneye kayıtlı üyelerin listesi */
     private List<Member> members;
 
-    /** Ödünç alınan kitapları temsil eden loan kayıtları */
+    /** Aktif ödünç alma işlemlerini tutan liste */
     private List<Loan> loans;
 
     /**
      * LibraryManager sınıfı için kurucu metot.
-     * Kitap, üye ve ödünç listelerini başlatır.
      */
     public LibraryManager() {
         this.books = new ArrayList<>();
@@ -44,15 +48,6 @@ public class LibraryManager implements Searchable {
     }
 
     /**
-     * Sistemden bir kitabı kaldırır.
-     *
-     * @param book kaldırılacak kitap
-     */
-    public void removeBook(Book book) {
-        books.remove(book);
-    }
-
-    /**
      * Sisteme yeni bir üye ekler.
      *
      * @param member eklenecek üye
@@ -62,36 +57,73 @@ public class LibraryManager implements Searchable {
     }
 
     /**
-     * Bir üyenin kitap ödünç almasını sağlar.
-     * Kitap müsaitse ödünç alma işlemi gerçekleştirilir.
+     * Sisteme yeni bir öğrenci üye ekler.
      *
-     * @param book   ödünç alınacak kitap
-     * @param member kitabı ödünç alan üye
+     * @param student eklenecek öğrenci
      */
-    public void borrowBook(Book book, Member member) {
+    public void addStudent(StudentMember student) {
+        members.add(student);
+    }
+
+    /**
+     * Bir üyenin kitap ödünç almasını sağlar.
+     *
+     * @param book ödünç alınacak kitap
+     * @param member kitabı alan üye
+     * @param borrowDate ödünç alma tarihi
+     */
+    public void borrowBook(Book book, Member member, LocalDate borrowDate) {
         if (book.isAvailable()) {
             book.setAvailable(false);
-            loans.add(new Loan(book, member));
+            loans.add(new Loan(book, member, borrowDate));
         }
     }
 
     /**
      * Bir kitabın iade edilmesini sağlar.
      *
-     * @param book   iade edilecek kitap
-     * @param member kitabı iade eden üye
+     * @param book iade edilecek kitap
+     * @param returnDate iade tarihi
      */
-    public void returnBook(Book book, Member member) {
+    public void returnBook(Book book, LocalDate returnDate) {
         for (Loan loan : loans) {
-            if (loan != null) {
-                loan.returnBook();
+            if (loan.getBook().equals(book) && loan.getReturnDate() == null) {
+                loan.setReturnDate(returnDate);
+                book.setAvailable(true);
                 break;
             }
         }
     }
 
     /**
-     * Kütüphanede şu anda müsait olan kitapları listeler.
+     * Sistemde kayıtlı tüm üyeleri döndürür.
+     *
+     * @return üye listesi
+     */
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    /**
+     * Sistemde kayıtlı tüm kitapları döndürür.
+     *
+     * @return kitap listesi
+     */
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    /**
+     * Aktif ödünç alma işlemlerini döndürür.
+     *
+     * @return loan listesi
+     */
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    /**
+     * Kütüphanede müsait olan kitapları ekrana yazdırır.
      */
     public void showAvailableBooks() {
         for (Book book : books) {
@@ -104,7 +136,7 @@ public class LibraryManager implements Searchable {
     /**
      * Başlık veya yazar adına göre kitap araması yapar.
      *
-     * @param keyword arama anahtar kelimesi
+     * @param keyword arama kelimesi
      * @return bulunan kitapların listesi
      */
     @Override
@@ -117,7 +149,6 @@ public class LibraryManager implements Searchable {
                 result.add(book);
             }
         }
-
         return result;
     }
 }
